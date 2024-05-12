@@ -1,0 +1,123 @@
+body {
+    font-family: "Quicksand", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.navbar-brand .navbar-item {
+    font-size: 25px;
+    font-weight: 700;
+}
+
+.image-signup {
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.create-cards-form {
+    max-width: 500px;
+    margin: auto;
+}
+
+.card-button {
+    max-width: 400px;
+    margin: 20px auto;
+
+    .card-footer {
+        button:first-child {
+            font-weight: bold;
+            color: #ffffff;
+            border-radius: 0.75rem 0 0 0.75rem;
+            border: none;
+
+        }
+
+        button:nth-child(2) {
+            font-weight: bold;
+            color: #ffffff;
+            border-radius: 0 0.75rem 0.75rem 0;
+            border: none;
+        }
+    }
+}
+
+.form-max-width {
+    max-width: 400px;
+}
+
+.icon-mt {
+    margin-top: 100px;
+}
+
+#flashcards-display {
+    perspective: 1500px;
+}
+
+.flash-card {
+    max-width: 400px;
+    height: 300px;
+    margin: 0 auto;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transform-origin: center right;
+    transition: transform 1s, opacity 0.5s;
+}
+
+.flash-card.is-flipped {
+    transform: translateX(-100%) rotateY(-180deg);
+}
+
+.card__face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    backface-visibility: hidden;
+
+    color: black;
+    font-size: 50px;
+}
+
+.card__face--back {
+    transform: rotateY(180deg);
+}
+
+.text-overflow {
+    max-width: 100%;
+    overflow: hidden;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+#summary div {
+    max-width: 400px;
+    margin: 20px auto;
+}
+
+.main {
+    min-height: 71vh;
+
+    .hero {
+        background-image: url("https://images.unsplash.com/photo-1643946404144-0b3b5a7d47e2?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+        height: 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+}
+
+.subtitle {
+    margin: 0 auto;
+    max-width: 850px;
+}
+
+[data-theme=dark],
+.theme-dark.subtitle {
+
+    background-color: aqua;
+}

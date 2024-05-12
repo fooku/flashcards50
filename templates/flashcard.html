@@ -1,0 +1,122 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Flashcard
+{% endblock %}
+
+{% block script %}
+    <script>
+        var index = 0;
+        var keep = 0;
+        var know = 0;
+        const cards = {{ cards | tojson }}
+        console.log(cards)
+        document.addEventListener('DOMContentLoaded', function() {
+            const term = document.getElementById("term");
+            const definition = document.getElementById("definition");
+            const amountCards = document.getElementById("amount");
+            term.innerHTML=cards[index].term
+            definition.innerHTML=cards[index].definition
+            amountCards.innerHTML=`${index+1} / ${cards.length}`;
+
+            const keepButton = document.getElementById("keep")
+            keepButton.addEventListener("click", function(){
+                keep++
+                nextCard()
+            });
+
+            const knowButton = document.getElementById("know")
+            knowButton.addEventListener("click", function(){
+                know++
+                nextCard()
+            });
+
+            var card = document.getElementById('card');
+            card.addEventListener( 'click', function() {
+                card.classList.toggle('is-flipped');
+            });
+
+            function nextCard() {
+                index++;
+                if (index < cards.length) {
+                    card.classList.remove("is-flipped");
+                    term.innerHTML=cards[index].term
+                    definition.innerHTML=cards[index].definition
+                    amountCards.innerHTML=`${index+1} / ${cards.length}`;
+                    console.log(index, keep, know)
+                } else {
+                    document.getElementById('flashcards-display').hidden = true
+                    document.getElementById('summary').hidden = false
+                    document.getElementById('summary-keep').innerHTML = keep
+                    document.getElementById('summary-know').innerHTML =  know
+                }
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block main %}
+    <div class="container py-5 text-center">
+        {% if errs %}
+            <h1 class="is-size-1">Not found</h1>
+        {% else %}
+        <div class="is-flex is-justify-content-space-between">
+            <div>
+                <a class="icon has-text-black" href="/cards">
+                    <i class="fas fa-angle-left fa-2x mr-2"></i>
+                </a>
+                <span class="is-size-2">
+                    {% if flashcard %}
+                        {{ flashcard.title }}
+                    {% endif %}
+                </span>
+            </div>
+            <h3 id="amount" class="is-size-3">1/2</h3>
+        </div>
+        <hr>
+        <div id="summary" hidden>
+            <div class="box">
+                <nav class="level">
+                    <div class="level-item has-text-centered">
+                      <div>
+                        <p class="heading">Keep</p>
+                        <p class="title has-text-danger" id="summary-keep"></p>
+                      </div>
+                    </div>
+                    <div class="level-item has-text-centered">
+                      <div>
+                        <p class="heading">Know</p>
+                        <p class="title has-text-success" id="summary-know">123</p>
+                      </div>
+                    </div>
+                </nav>
+            </div>
+            <div><a class="button is-light is-fullwidth" href="/cards">Close</a></div>
+        </div>
+        <div id="flashcards-display">
+            <div id="card" class="card flash-card">
+                <div class="card__face">
+                    <p class="text-overflow" id="term"></p>
+                </div>
+                <div class="card__face card__face--back">
+                    <p class="text-overflow" id="definition"></p>
+                </div>
+            </div>
+
+            <div class="card card-button">
+                <footer class="card-footer">
+                    <button id="keep" type="button" class="card-footer-item has-background-danger">
+                        <span>
+                            Keep
+                        </span>
+                    </button>
+                    <button id="know" type="button" class="card-footer-item has-background-success">
+                        <span>
+                            Know
+                        </span>
+                    </button>
+                </footer>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

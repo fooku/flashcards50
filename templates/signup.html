@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Sign up
+{% endblock %}
+
+{% block main %}
+<div class="container">
+    <div class="columns mt-5">
+            <form action="/signup" method="post" class="py-5 has-text-centered mx-auto">
+                <h1 class="is-size-2 my-3">Sign up</h1>
+                <div class="field">
+                    <p class="control has-icons-left">
+                        <input autocomplete="off" autofocus class="input {% if errs and errs['username'] %}is-danger{% endif %}" placeholder="Username" name="uesrname">
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                        {% if errs and errs['username'] %}
+                            <p class="help is-danger {{errs['username']}}">{{ errs['username'] }}</p>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="field">
+                    <p class="control has-icons-left">
+                        <input name="password" class="input {% if errs and errs['password'] %}is-danger{% endif %}" type="password" placeholder="Password">
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-lock"></i>
+                        </span>
+                        {% if errs and errs['password'] %}
+                            <p class="help is-danger {{errs['password']}}">{{ errs['password'] }}</p>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="field">
+                    <p class="control has-icons-left">
+                        <input class="input {% if errs and errs['confirm'] %}is-danger{% endif %}" type="password" placeholder="Password (again)" name="confirm">
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-lock"></i>
+                        </span>
+                        {% if errs and errs['confirm'] %}
+                            <p class="help is-danger {{errs['confirm']}}">{{ errs['confirm'] }}</p>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="field mt-4">
+                    <p class="control">
+                        <button class="button is-success" type="submit">
+                            Sign up
+                        </button>
+                    </p>
+                </div>
+            </form>
+        </div>
+</div>
+
+{% endblock %}

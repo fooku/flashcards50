@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block main %}
+<section class="hero is-fullheight is-bold">
+    <div class="hero-body">
+      <div class="container has-text-centered">
+        <h1 class="title is-size-1 mb-5">
+          <p>The Flashcards50</p>
+          <p>Online Flashcards Tool</p>
+        </h1>
+        <p class="subtitle">
+          Flashcards are a powerful learning tool used for memorization and reinforcing knowledge. They consist of small cards with a question or term on one side and the definition on the other. Flashcards promote active recall and repetition, making them effective for learning various subjects.
+        </p>
+        {% if session["user_id"] %}
+          <a href="/cards" class="button is-large is-light">Get Started</a>
+        {% else %}
+          <a href="/signup" class="button is-large is-primary">Sign up</a>
+          <a href="/login" class="button is-large is-light">Login</a>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

@@ -1,0 +1,169 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Create
+{% endblock %}
+
+{% block script %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const removeCard = document.getElementById("remove-card")
+            removeCard.addEventListener("click", function(){
+                var container = document.getElementById('cards-input');
+                var card = document.querySelectorAll('.card');
+                if (card.length > 0) {
+                    container.removeChild(card[card.length - 1]);
+                    if (card.length - 1 == 1) {
+                        document.getElementById("remove-card").disabled = true;
+                    }
+                }
+            });
+
+            const addCard = document.getElementById("add-card");
+                addCard.addEventListener("click", function() {
+                    const cardsInput = document.getElementById("cards-input");
+                    const numCards = cardsInput.querySelectorAll('.card').length;
+
+                    var cardDiv = document.createElement("div");
+                    cardDiv.classList.add("card");
+                    cardDiv.classList.add("p-5");
+
+                    inputLen = cardsInput.childElementCount
+                    var termInput = document.createElement("input");
+                    termInput.setAttribute("name", `term`);
+                    termInput.classList.add("field", "input", "mb-0");
+                    termInput.setAttribute("type", "text");
+                    termInput.setAttribute("placeholder", "Term");
+                    termInput.setAttribute("id", `term-${inputLen+1}`);
+
+                    var definitionInput = document.createElement("input");
+                    definitionInput.setAttribute("name", `definition`);
+                    definitionInput.classList.add("field", "input", "mb-0", "bt-2");
+                    definitionInput.setAttribute("type", "text");
+                    definitionInput.setAttribute("placeholder", "Definition");
+                    definitionInput.setAttribute("id", `definition-${inputLen+1}`);
+
+                    var errMsgTerm = document.createElement("p");
+                    errMsgTerm.classList.add("help", "is-danger", "has-text-left");
+                    errMsgTerm.setAttribute("id", `term-${inputLen+1}-err`);
+
+                    var errMsgDef = document.createElement("p");
+                    errMsgDef.classList.add("help", "is-danger", "has-text-left");
+                    errMsgDef.setAttribute("id", `definition-${inputLen+1}-err`);
+
+                    cardDiv.appendChild(termInput);
+                    cardDiv.appendChild(errMsgTerm);
+                    cardDiv.appendChild(definitionInput);
+                    cardDiv.appendChild(errMsgDef);
+
+                    cardsInput.appendChild(cardDiv);
+
+                    document.getElementById("remove-card").disabled = false;
+                });
+
+            const a = document.getElementById('flashcards-form')
+            a.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                var inputErrs = document.querySelectorAll("input.is-danger");
+                for (var i = 0; i < inputErrs.length; i++) {
+                    inputErrs[i].classList.remove("is-danger");
+                }
+                var msgErrs = document.querySelectorAll(".help");
+                for (var i = 0; i < msgErrs.length; i++) {
+                    msgErrs[i].innerHTML = ""
+                }
+
+                const cardsInput = document.getElementById('cards-input')
+                var cardsData = [];
+                for (const child of cardsInput.children) {
+                    console.log("child.childElementCount", child.childElementCount)
+                    if (child.childElementCount == 4) {
+                        var data = {};
+                        console.log("child.children",child.children)
+                        data["term-id"] = child.children[0].id;
+                        data["definition-id"] = child.children[2].id;
+                        data[child.children[0].name] = child.children[0].value;
+                        data[child.children[2].name] = child.children[2].value;
+                        cardsData.push(data);
+                    }
+                }
+                console.log("cardsData", cardsData)
+                var formData = {
+                    title: document.getElementById('title').value,
+                    cards: cardsData
+                }
+                var jsonData = JSON.stringify(formData);
+
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/cards/create');
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onload = function() {
+                    console.log(xhr.status)
+                    if (xhr.status === 201) {
+                        window.location.href = "/cards";
+                    } else if (xhr.status === 400) {
+                        const errs = JSON.parse(xhr.response);
+                        console.log(errs)
+                        for (key in errs) {
+                            console.log(key, errs[key])
+                            document.getElementById(key).classList.add("is-danger");
+                            document.getElementById(`${key}-err`).innerHTML = errs[key]
+                        }
+                    }
+                };
+                xhr.send(jsonData);
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block main %}
+    <div class="container py-5 text-center">
+        <div>
+            <a class="icon has-text-black" href="/cards">
+                <i class="fas fa-angle-left fa-2x mr-2"></i>
+            </a>
+            <span class="is-size-2">Create Flashcard</span>
+        </div>
+        <hr>
+        <form id="flashcards-form" class="has-text-centered create-cards-form">
+            <div class="field">
+                <p class="control has-icons-left">
+                    <input id="title" class="input is-medium" type="text" placeholder="Title">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-file-signature"></i>
+                    </span>
+                    <p class="help is-danger has-text-left" id="title-err"></p>
+                </p>
+            </div>
+
+            <div id="cards-input">
+                <div class="card p-5">
+                    <input id="term-1" name="term" class="field input mb-0" type="text" placeholder="Term">
+                    <p id="term-1-err" class="help is-danger has-text-left"></p>
+                    <input id="definition-1" name="definition" class="field input mb-0 mt-2" type="text" placeholder="Definition">
+                    <p id="definition-1-err" class="help is-danger has-text-left"></p>
+                </div>
+            </div>
+            <p id="cards-err-msg" class="help is-danger has-text-left"></p>
+
+            <div class="my-5">
+                <button id="remove-card" type="button" class="button is-rounded has-text-danger" disabled>
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button id="add-card" type="button" class="button is-rounded has-text-success">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+
+            <div class="field">
+                <p class="control">
+                    <button class="button is-success is-fullwidth" type="submit">
+                        Create
+                    </button>
+                </p>
+            </div>
+        </form>
+    </div>
+{% endblock %}

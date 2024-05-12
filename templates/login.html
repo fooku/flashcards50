@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block main %}
+<div class="container py-5 text-center" data-theme="light">
+    <div class="columns mt-5">
+        <form action="/login" method="post" class="has-text-centered mx-auto">
+            <h1 class="is-size-2 my-3">Log in</h1>
+            <div class="field">
+                <p class="control has-icons-left">
+                    <input autocomplete="off" autofocus class="input {% if errs and errs['username'] %}is-danger{% endif %}" placeholder="Username" name="uesrname">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-envelope"></i>
+                    </span>
+                    {% if errs and errs['username'] %}
+                        <p class="help is-danger {{errs['username']}}">{{ errs['username'] }}</p>
+                    {% endif %}
+                </p>
+            </div>
+            <div class="field">
+                <p class="control has-icons-left">
+                    <input name="password" class="input {% if errs and errs['password'] %}is-danger{% endif %}" type="password" placeholder="Password">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-lock"></i>
+                    </span>
+                    {% if errs and errs['password'] %}
+                        <p class="help is-danger {{errs['password']}}">{{ errs['password'] }}</p>
+                    {% endif %}
+                </p>
+            </div>
+            <div class="field mt-5">
+                <p class="control">
+                    <button class="button is-success" type="submit">
+                        Log in
+                    </button>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

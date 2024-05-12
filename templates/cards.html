@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Flashcards
+{% endblock %}
+
+{% block main %}
+    <div class="container py-5 text-center">
+        <div class="is-flex is-justify-content-space-between">
+            <h1 class="is-size-2">Cards</h1>
+            <a class="button is-primary" href="/cards/create">Add Flashcard</a>
+        </div>
+        <hr>
+        <div class="columns is-multiline">
+            {% if flashcards %}
+                {% for flashcard in flashcards %}
+                    <div class="column is-4">
+                        <a href="/cards/{{flashcard.id}}" class="card">
+                            <header class="card-header">
+                                <p class="card-header-title">{{ flashcard.title }}</p>
+                            </header>
+                        </a>
+                    </div>
+                {% endfor %}
+            {% else %}
+                    <div class="has-text-centered mx-auto icon-mt">
+                        <p class="icon">
+                            <i class="fas fa-folder-open fa-5x"></i>
+                          </p>
+                          <p class="is-size-3">Empty</p>
+                    </div>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

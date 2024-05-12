@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+
+<html lang="en" data-theme="light">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, width=device-width">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
+        <script src="https://kit.fontawesome.com/5af6ab045f.js" crossorigin="anonymous"></script>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+
+        <link href="/static/favicon.ico" rel="icon">
+        <link href="/static/styles.css" rel="stylesheet">
+
+        <title>Flashcard: {% block title %}{% endblock %}</title>
+
+
+        {% block script %}{% endblock %}
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+
+                $navbarBurgers.forEach( el => {
+                    el.addEventListener('click', () => {
+
+                        const target = el.dataset.target;
+                        const $target = document.getElementById(target);
+
+                        el.classList.toggle('is-active');
+                        $target.classList.toggle('is-active');
+                    });
+                });
+            });
+        </script>
+    </head>
+
+    <body>
+        <nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="/">
+                    <img src="/static/b.png"/>
+                    <span>Flashcards50</span>
+                </a>
+
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbar">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+
+            <div id="navbar" class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item" href="/">
+                        Home
+                    </a>
+                    {% if session["user_id"] %}
+                        <a class="navbar-item" href="/cards">
+                            Cards
+                        </a>
+                    {% endif %}
+                </div>
+
+                <div class="navbar-end">
+                    {% if session["user_id"] %}
+                        <div class="navbar-item">
+                            <div class="buttons">
+                                <a href="/logout" class="button is-light">
+                                    Log out
+                                </a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="navbar-item">
+                            <div class="buttons">
+                                <a href="/signup" class="button is-primary">
+                                    <strong>Sign up</strong>
+                                </a>
+                                <a href="/login" class="button is-light">
+                                    Log in
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+        <main class="main">
+            {% block main %}{% endblock %}
+        </main>
+
+        <footer class="footer">
+            <div class="content has-text-centered">
+              <p>
+                &copy; 2024 This is a final project for Harvard <strong>CS50</strong> course
+                 <!-- by <a href="https://github.com/fooku">Jack</a>. -->
+              </p>
+            </div>
+          </footer>
+    </body>
+
+</html>
