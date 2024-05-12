@@ -189,3 +189,6 @@ def create_cards():
 
 
     return render_template("create-cards.html")
+
+if __name__ == "__main__":
+    app.run(debug=True)
